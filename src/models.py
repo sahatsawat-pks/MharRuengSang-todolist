@@ -139,6 +139,18 @@ class TodoManager:
         with open(self.todos_file_path, "w") as f:
             json.dump(todos, f, indent=2)
 
+    def get_all_todos(self) -> list[TodoItem]:
+        """Get all todos from the system."""
+        todos_data = self._load_todos()
+        all_todos = []
+        for todo in todos_data:
+            # Convert string values back to enums
+            todo_dict = todo.copy()
+            todo_dict["priority"] = Priority(todo["priority"])
+            todo_dict["status"] = Status(todo["status"])
+            all_todos.append(TodoItem(**todo_dict))
+        return all_todos
+
     def get_user_todos(self, username: str) -> list[TodoItem]:
         """Get all todos for a user."""
         todos_data = self._load_todos()
