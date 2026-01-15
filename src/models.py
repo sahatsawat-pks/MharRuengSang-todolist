@@ -224,3 +224,29 @@ class TodoManager:
                 todo_dict["status"] = Status(todo["status"])
                 return TodoItem(**todo_dict)
         return None
+
+    def mark_as_completed(self, todo_id: str) -> bool:
+        """Mark a specific todo item as completed.
+
+        Args:
+            todo_id: The ID of the todo item to mark as completed
+
+        Returns:
+            bool: True if successfully marked as completed, False otherwise
+        """
+        todo = self.get_todo_by_id(todo_id)
+        if todo is None:
+            return False
+
+        # Update the status to COMPLETED and update the timestamp
+        updated_todo = TodoItem(
+            id=todo.id,
+            title=todo.title,
+            details=todo.details,
+            priority=todo.priority,
+            status=Status.COMPLETED,
+            owner=todo.owner,
+            created_at=todo.created_at,
+            updated_at=datetime.utcnow().isoformat(),
+        )
+        return self.update_todo(todo_id, updated_todo)

@@ -69,8 +69,9 @@ class App:
             print("[2] View All Todos")
             print("[3] Add Todo")
             print("[4] Edit Todo")
-            print("[5] View Todo Details")
-            print("[6] Logout")
+            print("[5] Mark Todo as Completed")
+            print("[6] View Todo Details")
+            print("[7] Logout")
             choice = input("Select an option: ").strip()
 
             if choice == "1":
@@ -82,8 +83,10 @@ class App:
             elif choice == "4":
                 self.handle_edit_todo()
             elif choice == "5":
-                self.handle_view_todo_details()
+                self.handle_mark_as_completed()
             elif choice == "6":
+                self.handle_view_todo_details()
+            elif choice == "7":
                 print(f"Logging out. Goodbye, {self.current_user}!")
                 self.current_user = None
                 break
@@ -191,6 +194,41 @@ class App:
                 )
                 self.todo_manager.update_todo(todo.id, updated_todo)
                 print("Todo updated successfully!")
+            else:
+                print("Invalid choice.")
+        except ValueError:
+            print("Invalid input.")
+
+    def handle_mark_as_completed(self):
+        """Handle marking a todo as completed."""
+        todos = self.todo_manager.get_user_todos(self.current_user)
+        if not todos:
+            print("No todos to mark as completed.")
+            return
+
+        # Filter to show only pending todos
+        pending_todos = [todo for todo in todos if todo.status == Status.PENDING]
+        if not pending_todos:
+            print("No pending todos to mark as completed.")
+            return
+
+        print("\n--- Your Pending Todos ---")
+        for i, todo in enumerate(pending_todos, 1):
+            print(
+                f"[{i}] {todo.title} - Priority: {todo.priority.value}"
+            )
+            print(f"    Details: {todo.details}")
+            print()
+
+        try:
+            choice = int(input("Enter the number of the todo to mark as completed: ").strip())
+            if 1 <= choice <= len(pending_todos):
+                todo = pending_todos[choice - 1]
+                success = self.todo_manager.mark_as_completed(todo.id)
+                if success:
+                    print(f"Todo '{todo.title}' marked as completed!")
+                else:
+                    print("Failed to mark todo as completed.")
             else:
                 print("Invalid choice.")
         except ValueError:

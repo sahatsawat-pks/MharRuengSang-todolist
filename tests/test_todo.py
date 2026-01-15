@@ -426,3 +426,73 @@ class TestTodoManager:
         assert retrieved_todo is not None
         assert retrieved_todo.title == "Persistent Todo"
         assert retrieved_todo.details == "Persisted"
+
+    # Mark as Completed Tests
+
+    def test_mark_as_completed_existing_pending_todo(self, todo_manager):
+        """Test marking an existing pending todo as completed."""
+        todo = TodoItem(
+            title="Pending Todo",
+            details="This needs to be completed",
+            priority=Priority.MID,
+            status=Status.PENDING,
+            owner="user1",
+        )
+        todo_manager.add_todo(todo)
+        original_id = todo.id
+        original_updated_at = todo.updated_at
+
+        result = todo_manager.mark_as_completed(original_id)
+        assert result is True
+
+        # Verify the todo was updated
+        updated_todo = todo_manager.get_todo_by_id(original_id)
+        assert updated_todo is not None
+        assert updated_todo.status == Status.COMPLETED
+        assert updated_todo.title == "Pending Todo"
+        assert updated_todo.details == "This needs to be completed"
+        assert updated_todo.priority == Priority.MID
+        assert updated_todo.owner == "user1"
+        assert updated_todo.created_at == todo.created_at
+        assert updated_todo.updated_at != original_updated_at  # Should be updated
+
+    def test_mark_as_completed_nonexistent_todo(self, todo_manager):
+        """Test marking a non-existent todo as completed."""
+        result = todo_manager.mark_as_completed("nonexistent_id")
+        assert result is False
+
+    def test_mark_as_completed_already_completed_todo(self, todo_manager):
+        """Test marking an already completed todo as completed."""
+        todo = TodoItem(
+            title="Already Completed",
+            status=Status.COMPLETED,
+            owner="user1",
+        )
+        todo_manager.add_todo(todo)
+        original_id = todo.id
+
+        result = todo_manager.mark_as_completed(original_id)
+        assert result is True
+
+        # Verify it remains completed
+        updated_todo = todo_manager.get_todo_by_id(original_id)
+        assert updated_todo is not None
+        assert updated_todo.status == Status.COMPLETED
+
+    def test_mark_as_completed_persistence(self, temp_dir):
+        """Test that mark_as_completed persists across instances."""
+        manager1 = TodoManager(data_dir=temp_dir)
+        todo = TodoItem(
+            title="Persistent Completion",
+            status=Status.PENDING,
+            owner="user1",
+        )
+        manager1.add_todo(todo)
+        todo_id = todo.id
+
+        manager1.mark_as_completed(todo_id)
+
+        manager2 = TodoManager(data_dir=temp_dir)
+        retrieved_todo = manager2.get_todo_by_id(todo_id)
+        assert retrieved_todo is not None
+        assert retrieved_todo.status == Status.COMPLETED
