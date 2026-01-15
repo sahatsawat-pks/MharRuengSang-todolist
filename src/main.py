@@ -65,19 +65,22 @@ class App:
         """Display menu after successful login."""
         while True:
             print(f"\n--- Welcome, {self.current_user}! ---")
-            print("[1] View Todos")
-            print("[2] Add Todo")
-            print("[3] Edit Todo")
-            print("[4] Logout")
+            print("[1] View My Todos")
+            print("[2] View All Todos")
+            print("[3] Add Todo")
+            print("[4] Edit Todo")
+            print("[5] Logout")
             choice = input("Select an option: ").strip()
 
             if choice == "1":
                 self.handle_view_todos()
             elif choice == "2":
-                self.handle_add_todo()
+                self.handle_view_all_todos()
             elif choice == "3":
-                self.handle_edit_todo()
+                self.handle_add_todo()
             elif choice == "4":
+                self.handle_edit_todo()
+            elif choice == "5":
                 print(f"Logging out. Goodbye, {self.current_user}!")
                 self.current_user = None
                 break
@@ -85,7 +88,7 @@ class App:
                 print("Invalid option. Please try again.")
 
     def handle_view_todos(self):
-        """Handle viewing todos."""
+        """Handle viewing todos for the current user."""
         todos = self.todo_manager.get_user_todos(self.current_user)
         if not todos:
             print("No todos found.")
@@ -94,6 +97,21 @@ class App:
         for i, todo in enumerate(todos, 1):
             print(
                 f"[{i}] {todo.title} - {todo.status.value} - Priority: {todo.priority.value}"
+            )
+            print(f"    Details: {todo.details}")
+            print(f"    Created: {todo.created_at}")
+            print()
+
+    def handle_view_all_todos(self):
+        """Handle viewing all todos in the system."""
+        all_todos = self.todo_manager.get_all_todos()
+        if not all_todos:
+            print("No todos found in the system.")
+            return
+        print("\n--- All Todos in System ---")
+        for i, todo in enumerate(all_todos, 1):
+            print(
+                f"[{i}] {todo.title} - Owner: {todo.owner} - {todo.status.value} - Priority: {todo.priority.value}"
             )
             print(f"    Details: {todo.details}")
             print(f"    Created: {todo.created_at}")
