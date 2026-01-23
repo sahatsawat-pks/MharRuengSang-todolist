@@ -36,7 +36,18 @@ def divide(a: Number, b: Number) -> Number:
 	return a / b
 
 
-__all__ = ["add", "subtract", "multiply", "divide"]
+def calculate_velocity(distance: float, time: float) -> float:
+	"""Calculate velocity = distance / time.
+
+	Raises:
+		ValueError: if time is less than or equal to zero.
+	"""
+	if time <= 0:
+		raise ValueError("Time must be greater than zero")
+	return distance / time
+
+
+__all__ = ["add", "subtract", "multiply", "divide", "calculate_velocity"]
 
 
 def _to_number(value: str) -> Number:
