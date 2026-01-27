@@ -1,0 +1,89 @@
+[33mcommit 3cd58eda580268e14069d5ac20765a4a7a5f3afe[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;33mtag: [m[1;33mv1.0-baseline[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Author: Khowpunza <panatthaphong47@gmail.com>
+Date:   Tue Jan 27 07:36:29 2026 +0000
+
+    Add simple Python calculator
+
+[1mdiff --git a/6688175_Panatthaphong/calculator.py b/6688175_Panatthaphong/calculator.py[m
+[1mnew file mode 100644[m
+[1mindex 0000000..c3a1c71[m
+[1m--- /dev/null[m
+[1m+++ b/6688175_Panatthaphong/calculator.py[m
+[36m@@ -0,0 +1,77 @@[m
+[32m+[m[32m"""[m
+[32m+[m[32mSimple Python Calculator Program[m
+[32m+[m[32mSupports basic operations: add, subtract, multiply, and divide[m
+[32m+[m[32m"""[m
+[32m+[m
+[32m+[m
+[32m+[m[32mdef add(a, b):[m
+[32m+[m[32m    """Add two numbers."""[m
+[32m+[m[32m    return a + b[m
+[32m+[m
+[32m+[m
+[32m+[m[32mdef subtract(a, b):[m
+[32m+[m[32m    """Subtract two numbers."""[m
+[32m+[m[32m    return a - b[m
+[32m+[m
+[32m+[m
+[32m+[m[32mdef multiply(a, b):[m
+[32m+[m[32m    """Multiply two numbers."""[m
+[32m+[m[32m    return a * b[m
+[32m+[m
+[32m+[m
+[32m+[m[32mdef divide(a, b):[m
+[32m+[m[32m    """Divide two numbers. Returns None if division by zero."""[m
+[32m+[m[32m    if b == 0:[m
+[32m+[m[32m        print("Error: Cannot divide by zero")[m
+[32m+[m[32m        return None[m
+[32m+[m[32m    return a / b[m
+[32m+[m
+[32m+[m
+[32m+[m[32mdef calculator():[m
+[32m+[m[32m    """Main calculator function to handle user input and operations."""[m
+[32m+[m[32m    print("=" * 40)[m
+[32m+[m[32m    print("Simple Python Calculator")[m
+[32m+[m[32m    print("=" * 40)[m
+[32m+[m[41m    [m
+[32m+[m[32m    while True:[m
+[32m+[m[32m        print("\nOperations:")[m
+[32m+[m[32m        print("1. Add")[m
+[32m+[m[32m        print("2. Subtract")[m
+[32m+[m[32m        print("3. Multiply")[m
+[32m+[m[32m        print("4. Divide")[m
+[32m+[m[32m        print("5. Exit")[m
+[32m+[m[41m        [m
+[32m+[m[32m        choice = input("\nEnter your choice (1/2/3/4/5): ").strip()[m
+[32m+[m[41m        [m
+[32m+[m[32m        if choice == '5':[m
+[32m+[m[32m            print("Thank you for using the calculator. Goodbye!")[m
+[32m+[m[32m            break[m
+[32m+[m[41m        [m
+[32m+[m[32m        if choice not in ['1', '2', '3', '4']:[m
+[32m+[m[32m            print("Invalid choice. Please enter a valid option (1/2/3/4/5).")[m
+[32m+[m[32m            continue[m
+[32m+[m[41m        [m
+[32m+[m[32m        try:[m
+[32m+[m[32m            num1 = float(input("Enter first number: "))[m
+[32m+[m[32m            num2 = float(input("Enter second number: "))[m
+[32m+[m[32m        except ValueError:[m
+[32m+[m[32m            print("Invalid input. Please enter numeric values.")[m
+[32m+[m[32m            continue[m
+[32m+[m[41m        [m
+[32m+[m[32m        if choice == '1':[m
+[32m+[m[32m            result = add(num1, num2)[m
+[32m+[m[32m            print(f"\n{num1} + {num2} = {result}")[m
+[32m+[m[32m        elif choice == '2':[m
+[32m+[m[32m            result = subtract(num1, num2)[m
+[32m+[m[32m            print(f"\n{num1} - {num2} = {result}")[m
+[32m+[m[32m        elif choice == '3':[m
+[32m+[m[32m            result = multiply(num1, num2)[m
+[32m+[m[32m            print(f"\n{num1} * {num2} = {result}")[m
+[32m+[m[32m        elif choice == '4':[m
+[32m+[m[32m            result = divide(num1, num2)[m
+[32m+[m[32m            if result is not None:[m
+[32m+[m[32m                print(f"\n{num1} / {num2} = {result}")[m
+[32m+[m
+[32m+[m
+[32m+[m[32mif __name__ == "__main__":[m
+[32m+[m[32m    calculator()[m
