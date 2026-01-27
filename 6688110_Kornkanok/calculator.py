@@ -16,7 +16,11 @@ def divide(a, b):
         raise ValueError("Cannot divide by zero")
     return a / b
 
-if __name__ == "__main__":
+def velocity(distance, time):
+    """Calculate velocity as distance divided by time."""
+    if time == 0:
+        raise ValueError("Time cannot be zero")
+    return distance / time
     import sys
     if len(sys.argv) != 4:
         print("Usage: python calculator.py <num1> <op> <num2>")
