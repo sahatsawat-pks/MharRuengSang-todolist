@@ -27,6 +27,14 @@ def divide(a: float, b: float) -> float:
 	return a / b
 
 
+def calculate_velocity(distance: float, time: float) -> float:
+	"""Return velocity given distance and time; raise ValueError for nonpositive time."""
+
+	if time <= 0:
+		raise ValueError("Time must be greater than zero")
+	return distance / time
+
+
 def main() -> None:
 	print("Simple Calculator")
 	print("Select operation:")
