@@ -73,11 +73,5 @@ def calculator():
                 print(f"\n{num1} / {num2} = {result}")
 
 
-def calculate_velocity(distance: float, time: float) -> float:
-    if time <= 0:
-        raise ValueError("Time must be greater than zero")
-    return distance / time
-
-
 if __name__ == "__main__":
     calculator()
