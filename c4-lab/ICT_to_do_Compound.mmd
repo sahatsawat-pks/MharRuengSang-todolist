@@ -1,0 +1,45 @@
+C4Component
+    title Component Diagram for ICT To Do List System - API Application
+
+    Container(web, "Web App", "React", "Provides task management via web browser")
+    Container(mobile, "Mobile App", "Flutter", "Provides task management via mobile device")
+    ContainerDb(db, "Database", "PostgreSQL", "Stores users, tasks, courses, sync data")
+    System_Ext(sso, "University SSO", "Authentication Provider")
+    System_Ext(mycourses, "MyCourses", "E-learning System", "Courses and assignments")
+
+    Container_Boundary(api, "API Application") {
+        Component(sign, "Authentication Controller", "REST Controller", "Handles login and token validation")
+        Component(users, "User Profile Controller", "REST Controller", "Manages user profiles")
+        Component(tasks, "Task Controller", "REST Controller", "Manages user tasks")
+        Component(sync, "MyCourses Sync Service", "Service Component", "Synchronizes assignments")
+        Component(security, "Security Component", "Service Component", "Authorization and access control")
+
+        Rel(sign, security, "Uses")
+        Rel(tasks, security, "Uses")
+        Rel(users, security, "Uses")
+
+        Rel(tasks, sync, "Uses")
+        Rel(sync, mycourses, "Uses", "HTTPS/JSON")
+
+        Rel(security, db, "Reads/Writes", "SQL")
+    }
+
+    Rel(web, sign, "Uses", "JSON/HTTPS")
+    Rel(web, tasks, "Uses", "JSON/HTTPS")
+    Rel(web, users, "Uses", "JSON/HTTPS")
+
+    Rel(mobile, sign, "Uses", "JSON/HTTPS")
+    Rel(mobile, tasks, "Uses", "JSON/HTTPS")
+
+    Rel(sign, sso, "Authenticates via", "OAuth2/OIDC")
+
+    UpdateRelStyle(web, sign, $offsetY="-40")
+    UpdateRelStyle(web, tasks, $offsetX="40", $offsetY="40")
+
+    UpdateRelStyle(mobile, sign, $offsetX="-90", $offsetY="40")
+    UpdateRelStyle(mobile, tasks, $offsetY="-40")
+
+    UpdateRelStyle(sign, security, $offsetX="-140", $offsetY="10")
+    UpdateRelStyle(tasks, sync, $offsetX="140", $offsetY="10")
+    UpdateRelStyle(security, db, $offsetY="-40")
+    UpdateRelStyle(sync, mycourses, $offsetY="-40")

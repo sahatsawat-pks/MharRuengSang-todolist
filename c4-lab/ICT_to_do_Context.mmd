@@ -1,0 +1,20 @@
+C4Context
+    title ICT To Do List System - Context
+
+    Person(student, "Student", "Manages personal and course tasks, views assignments, tracks submission status.")
+    Person(instructor, "Instructor", "Manages teaching tasks and monitors assignment deadlines.")
+    Person(admin, "System Administrator", "Manages system configuration, user accounts, and monitors sync health.")
+
+    System(ict_todo, "ICT To Do List System", "Task management system for students and instructors.")
+
+    System_Ext(mycourses, "MyCourses", "ICT e-learning system providing courses and assignments.")
+    System_Ext(sso, "University SSO", "Single Sign-On authentication provider.")
+    System_Ext(postgresql, "PostgreSQL Database", "Stores users, tasks, sync settings, and history.")
+
+    Rel(student, ict_todo, "Uses", "Web / Mobile App")
+    Rel(instructor, ict_todo, "Uses", "Web / Mobile App")
+    Rel(admin, ict_todo, "Administers", "Admin Interface")
+
+    Rel(ict_todo, mycourses, "Syncs courses, assignments, submission status", "HTTPS / JSON")
+    Rel(ict_todo, sso, "Authenticates users", "OAuth2 / OpenID Connect")
+    Rel(ict_todo, postgresql, "Reads/Writes data", "SQL")
