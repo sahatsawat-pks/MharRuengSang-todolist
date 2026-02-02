@@ -1,0 +1,48 @@
+C4Component
+title Component diagram for ICT To Do List - Web API
+
+Person(student, "Student", "Manages personal tasks and tracks course work by syncing assignments from MyCourses.")
+Person(instructor, "Instructor", "Views teaching-related tasks and monitors assignment deadlines for taught courses.")
+Person(admin, "System Administrator", "Manages system configuration, user accounts, and monitors sync health.")
+
+Container(webApp, "Web App", "React SPA", "Browser-based UI for students, instructors, and admins.")
+Container(mobileApp, "Mobile App", "Flutter", "Cross-platform mobile UI for students.")
+ContainerDb(database, "Database", "PostgreSQL", "Stores users, tasks, sync settings, and sync history.")
+
+System_Ext(mycourses, "MyCourses", "External ICT e-learning system that owns course, assignment, and submission data.")
+System_Ext(sso, "University SSO", "Authentication provider used when MyCourses supports OAuth2/OpenID Connect.")
+
+Container_Boundary(webApi, "Web API") {
+    Component(auth, "Authentication & Authorization", "FastAPI component", "Handles login, token validation, and access control.")
+    Component(taskMgmt, "Task Management", "FastAPI component", "CRUD operations for manual and imported tasks.")
+    Component(syncOrch, "MyCourses Sync Orchestrator", "FastAPI component", "Manages sync workflow and task updates.")
+    Component(mycoursesClient, "MyCourses Client", "HTTP client", "Calls MyCourses web services and parses JSON.")
+    Component(mapping, "Mapping", "Mapper", "Maps MyCourses data into internal task model.")
+    Component(syncHistory, "Sync History", "FastAPI component", "Records sync outcomes for admin monitoring.")
+    Component(dataAccess, "Data Access", "Repository/ORM", "Controlled database access using SQLAlchemy.")
+}
+
+Rel(student, webApp, "Uses", "HTTPS")
+Rel(student, mobileApp, "Uses", "HTTPS")
+Rel(instructor, webApp, "Uses", "HTTPS")
+Rel(admin, webApp, "Uses admin interface", "HTTPS")
+
+Rel(webApp, taskMgmt, "Manages tasks via", "HTTPS/JSON")
+Rel(webApp, syncOrch, "Starts sync via", "HTTPS/JSON")
+Rel(webApp, auth, "Authenticates via", "HTTPS/JSON")
+Rel(mobileApp, taskMgmt, "Manages tasks via", "HTTPS/JSON")
+Rel(mobileApp, syncOrch, "Starts sync via", "HTTPS/JSON")
+Rel(mobileApp, auth, "Authenticates via", "HTTPS/JSON")
+
+Rel(taskMgmt, dataAccess, "Reads/writes tasks", "SQL/ORM")
+Rel(syncOrch, mycoursesClient, "Retrieves courses/assignments/submissions", "HTTPS/JSON")
+Rel(syncOrch, mapping, "Maps external data", "In-process")
+Rel(syncOrch, dataAccess, "Creates/updates tasks", "SQL/ORM")
+Rel(syncOrch, syncHistory, "Records sync results", "In-process")
+Rel(syncHistory, dataAccess, "Stores sync logs", "SQL/ORM")
+
+Rel(auth, sso, "Authenticates users when available", "OAuth2/OIDC")
+Rel(mycoursesClient, mycourses, "Calls MyCourses APIs", "HTTPS/JSON")
+Rel(dataAccess, database, "Reads and writes", "SQL/ORM")
+
+UpdateLayoutConfig($c4ShapeInRow="2")
