@@ -1,0 +1,35 @@
+```mermaid
+C4Container
+title Container diagram for ICT To Do List
+
+Person(student, "Student", "Manages personal tasks and tracks course work by syncing assignments from MyCourses.")
+Person(instructor, "Instructor", "Views teaching-related tasks and monitors assignment deadlines for taught courses.")
+Person(admin, "System Administrator", "Manages system configuration, user accounts, and monitors sync health.")
+
+System_Boundary(ictTodo, "ICT To Do List") {
+    Container(webApp, "Web App", "React SPA", "Browser-based UI for students, instructors, and admins.")
+    Container(mobileApp, "Mobile App", "Flutter", "Cross-platform mobile UI for students.")
+    Container(webApi, "Web API", "Python FastAPI", "Backend service exposing REST endpoints for task management and sync.")
+    ContainerDb(database, "Database", "PostgreSQL", "Stores users, tasks, sync settings, and sync history.")
+    Container(mycoursesConnector, "MyCourses Connector", "Python module/service", "Calls MyCourses web services and maps data into internal tasks.")
+}
+
+System_Ext(mycourses, "MyCourses", "External ICT e-learning system owning course, assignment, and submission data.")
+System_Ext(sso, "University SSO", "Authentication provider used when MyCourses supports OAuth2/OpenID Connect.")
+
+Rel(student, webApp, "Uses", "HTTPS")
+Rel(student, mobileApp, "Uses", "HTTPS")
+Rel(instructor, webApp, "Uses", "HTTPS")
+Rel(admin, webApp, "Uses admin interface", "HTTPS")
+
+Rel(webApp, webApi, "Sends requests and receives task data", "HTTPS/JSON")
+Rel(mobileApp, webApi, "Sends requests and receives task data", "HTTPS/JSON")
+
+Rel(webApi, database, "Reads and writes", "SQL/ORM")
+Rel(webApi, mycoursesConnector, "Invokes sync and mapping", "Internal call")
+Rel(mycoursesConnector, mycourses, "Retrieves courses, assignments, submission status", "HTTPS/JSON")
+
+Rel(webApi, sso, "Authenticates users when available", "OAuth2/OIDC")
+
+UpdateLayoutConfig($c4ShapeInRow="2")
+```
