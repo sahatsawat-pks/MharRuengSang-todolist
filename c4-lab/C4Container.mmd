@@ -1,0 +1,31 @@
+C4Container
+  title Container Diagram for ICT To Do List
+
+  Person(student, "Student")
+  Person(instructor, "Instructor")
+  Person(admin, "System Administrator")
+
+  System_Boundary(ict_todo_boundary, "ICT To Do List") {
+    Container(web_app, "Web App", "React SPA", "Provides web-based user interface for students and admins")
+    Container(mobile_app, "Mobile App", "Flutter", "Provides cross-platform mobile access for students")
+    Container(api, "Web API", "Python FastAPI", "Handles client requests, task logic, and sync workflows")
+    ContainerDb(db, "Database", "PostgreSQL", "Stores user profiles, tasks, settings, and sync history")
+    Container(mycourses_connector, "MyCourses Connector", "Python module/service", "Calls MyCourses web services and maps results")
+  }
+
+  System_Ext(mycourses, "MyCourses", "External ICT e-learning system")
+  System_Ext(sso, "University SSO", "Handles secure authentication")
+
+  Rel(student, web_app, "Uses", "HTTPS")
+  Rel(student, mobile_app, "Uses", "HTTPS")
+  Rel(instructor, web_app, "Uses", "HTTPS")
+  Rel(admin, web_app, "Uses admin interface", "HTTPS")
+
+  Rel(web_app, api, "Sends requests", "JSON/HTTPS")
+  Rel(mobile_app, api, "Sends requests", "JSON/HTTPS")
+  Rel(api, db, "Reads/Writes data", "SQL via ORM")
+  Rel(api, mycourses_connector, "Invokes for sync", "Internal call")
+  Rel(mycourses_connector, mycourses, "Calls APIs", "HTTPS/JSON")
+  Rel(api, sso, "Authenticates users", "OAuth2/OpenID Connect")
+
+  UpdateLayoutConfig($c4ShapeInRow="3")

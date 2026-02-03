@@ -1,0 +1,35 @@
+C4Component
+  title Component Diagram for ICT To Do List - Web API
+
+  Container(web_app, "Web App", "React", "Frontend UI")
+  Container(mobile_app, "Mobile App", "Flutter", "Cross-platform mobile UI")
+  ContainerDb(db, "Database", "PostgreSQL", "Stores user data and tasks")
+  System_Ext(mycourses, "MyCourses", "External ICT e-learning system")
+
+  Container_Boundary(api, "Web API - FastAPI") {
+    Component(auth, "Authentication & Authorization", "FastAPI Component", "Handles login, SSO tokens, and access control")
+    Component(task_mgmt, "Task Management", "FastAPI Component", "Handles create, read, update, delete, and status update of tasks")
+    Component(sync_orchestrator, "MyCourses Sync Orchestrator", "FastAPI Component", "Coordinates syncing from MyCourses")
+    Component(mycourses_client, "MyCourses Client", "FastAPI Component", "Calls MyCourses web APIs and parses responses")
+    Component(mapping, "Mapping", "Utility Component", "Maps MyCourses data to internal task format")
+    Component(sync_log, "Sync History", "Logging Component", "Records sync results for monitoring")
+    Component(data_access, "Data Access", "Repository Component", "Handles database transactions via ORM")
+
+    Rel(auth, data_access, "Verifies user info")
+    Rel(task_mgmt, data_access, "CRUD on tasks")
+    Rel(sync_orchestrator, mycourses_client, "Initiates data fetch")
+    Rel(mycourses_client, mycourses, "Fetches assignment data", "HTTPS/JSON")
+    Rel(mycourses_client, mapping, "Sends API response to")
+    Rel(mapping, task_mgmt, "Sends parsed tasks to")
+    Rel(sync_orchestrator, sync_log, "Logs result")
+    Rel(task_mgmt, sync_log, "Logs task update events")
+    Rel(task_mgmt, auth, "Checks permissions")
+    Rel(data_access, db, "SQL operations")
+  }
+
+  Rel(web_app, auth, "Login / Session", "JSON/HTTPS")
+  Rel(web_app, task_mgmt, "Manage Tasks", "JSON/HTTPS")
+  Rel(mobile_app, task_mgmt, "Manage Tasks", "JSON/HTTPS")
+  Rel(mobile_app, sync_orchestrator, "Start Sync", "JSON/HTTPS")
+
+  UpdateLayoutConfig($c4ShapeInRow="3")
