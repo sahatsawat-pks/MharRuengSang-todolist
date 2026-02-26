@@ -1,24 +1,18 @@
-# To-Do-List CLI Application
+# Food Delivery System (Frontend)
 
-## Team Member (MharRuengSang)
-* 6688005 - Thanaporn	Artidtayamontol (ThanapornArtid)
-* 6688064 - Natkrittar	Maswongwiwat    (YokNatkrittar)
-* 6688091 - Pundharee	Puckdinukul     (Pundharee6688091)
-* 6688110 - Kornkanok	Soongswang      (AlanT011)
-* 6688175 - Panatthaphong	Yoodee      (Khowpunza)
-* 6688249 - Sahatsawat	Nitjaphant      (sahatsawat-pks)
+This is a minimal React + Vite frontend scaffold for a Food Delivery System. It includes three portals: Customer, Restaurant, and Admin, and a mock JSON API using `json-server`.
 
-This is a simple To-Do-List command-line application written in Python. Users of the application will be able to perform the following tasks:
+Quick start (PowerShell):
 
-* **Sign up and log in**: Login details are stored in a JSON file.
-* **Create and edit**: Create and modify to-do-list items.
-* **View all**: List all to-do-list items.
-* **View item details**:
-    * Title
-    * Details
-    * Priority (high, low, mid)
-    * Status (completed, pending)
-    * Owner
-    * Updated date
-    * Created date
-* **Mark as completed**: Update the status of a specific item to completed.
+```powershell
+cd "C:\Users\Admin\Desktop\Food Delivery System"
+npm install
+npm run start:mock    # starts mock API at http://localhost:4000
+npm run dev           # starts Vite dev server
+```
+
+Notes:
+- The frontend expects the mock API at `http://localhost:4000`.
+- Use the Customer portal to browse restaurants and view menus.
+- Use the Restaurant portal to manage menu items (mocked with `json-server`).
+- Use the Admin portal to view simple revenue and discounts.

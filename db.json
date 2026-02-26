@@ -1,0 +1,25 @@
+{
+  "users": [
+    { "id": 1, "name": "Alice", "role": "customer", "email": "alice@example.com" }
+  ],
+  "restaurants": [
+    { "id": 1, "name": "Pasta Palace", "cuisine": "Italian" },
+    { "id": 2, "name": "Curry Corner", "cuisine": "Indian" }
+  ],
+  "menus": [
+    { "id": 1, "restaurantId": 1, "name": "Spaghetti Bolognese", "price": 12.5, "description": "Classic" },
+    { "id": 2, "restaurantId": 1, "name": "Fettuccine Alfredo", "price": 11.0, "description": "Creamy" },
+    { "id": 3, "restaurantId": 2, "name": "Chicken Tikka", "price": 10.0, "description": "Grilled" }
+  ],
+  "orders": [
+    { "id": 1, "customerId": 1, "restaurantId": 1, "items": [1], "total": 12.5, "status": "delivered" }
+  ],
+  "promotions": [
+    { "id": 1, "restaurantId": 1, "title": "Lunch Special", "discount": 10 }
+  ],
+  "discounts": [
+    { "id": 1, "code": "WELCOME10", "amount": 10 }
+  ]
+  ,
+  "ratings": []
+}
